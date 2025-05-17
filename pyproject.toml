@@ -1,0 +1,26 @@
+[project]
+name = "qwen-cline"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ahmad Rosyihuddin",email = "arosyihuddin6@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "qwen-api (>=1.1.4,<2.0.0)",
+    "fastapi (>=0.115.12,<0.116.0)",
+    "uvicorn (>=0.34.2,<0.35.0)"
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+llama-index = { version = "^0.12", python = ">=3.9,<4.0" }
+
+[tool.poetry]
+packages = [{include = "qwen_cline", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
