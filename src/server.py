@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
 from qwen_api.types.chat import ChatMessage
 from qwen_api.types.chat_model import ChatModel
-from llama_index.core.base.llms.types import TextBlock
+from llama_index.core.base.llms.types import TextBlock, ImageBlock
 from qwen_api import Qwen
 import dotenv
 dotenv.load_dotenv()
@@ -37,8 +37,13 @@ async def chat_completions(request: Request):
             continue
         else:
             for y in i['content']:
-                messages.append(ChatMessage(role=i['role'], blocks=[
-                                TextBlock(block_type=y["type"], text=y["text"])]))
+                if y["type"] == "image_url":
+                    print(y["image_url"]["url"])
+                    messages.append(ChatMessage(role=i['role'], blocks=[
+                                    ImageBlock(block_type="image", image=y["image_url"]["url"])]))
+                else:
+                    messages.append(ChatMessage(role=i['role'], blocks=[
+                        TextBlock(block_type=y["type"], text=y["text"])]))
 
     stream = await client.chat.acreate(model=model, messages=messages, stream=True)
 

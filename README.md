@@ -60,10 +60,10 @@ The server will run at `http://localhost:8000` and expose these endpoints:
 
 ```bash
 # With Poetry
-poetry run uvicorn qwen_cline.server:app --host 0.0.0.0 --port 8000
+poetry run uvicorn src.server:app --host 0.0.0.0 --port 8000
 
 # With venv
-uvicorn qwen_cline.server:app --host 0.0.0.0 --port 8000
+uvicorn src.server:app --host 0.0.0.0 --port 8000
 ```
 
 ---
