@@ -28,7 +28,8 @@ async def models():
 @app.post("/v1/chat/completions")
 async def chat_completions(request: Request):
     payload = await request.json()
-    get_msg = payload.get("messages", [])
+    get_msg = payload["messages"]
+    model = payload['model']
     messages = []
     for i in get_msg:
         if type(i["content"]) == str:
@@ -39,7 +40,7 @@ async def chat_completions(request: Request):
                 messages.append(ChatMessage(role=i['role'], blocks=[
                                 TextBlock(block_type=y["type"], text=y["text"])]))
 
-    stream = await client.chat.acreate(messages=messages, stream=True)
+    stream = await client.chat.acreate(model=model, messages=messages, stream=True)
 
     async def event_generator():
         async for chunk in stream:
