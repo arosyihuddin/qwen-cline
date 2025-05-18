@@ -1,6 +1,6 @@
 # qwen-cline
 
-> Integrate [qwen-api](https://github.com/arosyihuddin/qwen-api) with the Cline Extension.
+> Integrate [qwen-api](https://github.com/arosyihuddin/qwen-api) with the [Cline Extension](https://github.com/cline/cline).
 
 ---
 
