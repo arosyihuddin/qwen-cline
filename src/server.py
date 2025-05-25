@@ -1,9 +1,10 @@
+import dotenv
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
 from qwen_api.core.types.chat import ChatMessage, TextBlock, ImageBlock
 from qwen_api.core.types.chat_model import ChatModel
 from qwen_api import Qwen
-import dotenv
+from .utils import ganti_bagian_prompt
 dotenv.load_dotenv()
 
 app = FastAPI()
@@ -30,8 +31,14 @@ async def chat_completions(request: Request):
     get_msg = payload["messages"]
     model = payload['model']
     messages = []
+
     for i in get_msg:
-        if type(i["content"]) == str:
+        if i["role"] == "system":
+            prompt_sistem_dimodifikasi = ganti_bagian_prompt(i["content"])
+            messages.append(ChatMessage(
+                role=i['role'], content=prompt_sistem_dimodifikasi))
+            continue
+        elif type(i["content"]) == str:
             messages.append(ChatMessage(role=i['role'], content=i['content']))
             continue
         else:
