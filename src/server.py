@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
-from qwen_api.types.chat import ChatMessage
-from qwen_api.types.chat_model import ChatModel
-from llama_index.core.base.llms.types import TextBlock, ImageBlock
+from qwen_api.core.types.chat import ChatMessage, TextBlock, ImageBlock
+from qwen_api.core.types.chat_model import ChatModel
 from qwen_api import Qwen
 import dotenv
 dotenv.load_dotenv()
@@ -38,14 +37,19 @@ async def chat_completions(request: Request):
         else:
             for y in i['content']:
                 if y["type"] == "image_url":
-                    print(y["image_url"]["url"])
+                    getImageData = await client.chat.async_upload_file(base64_data=y["image_url"]["url"])
                     messages.append(ChatMessage(role=i['role'], blocks=[
-                                    ImageBlock(block_type="image", image=y["image_url"]["url"])]))
+                                    ImageBlock(block_type="image", url=getImageData.file_url)]))
                 else:
                     messages.append(ChatMessage(role=i['role'], blocks=[
-                        TextBlock(block_type=y["type"], text=y["text"])]))
+                        TextBlock(block_type=y["type"], text=y["text"])])
+                    )
 
-    stream = await client.chat.acreate(model=model, messages=messages, stream=True)
+    stream = await client.chat.acreate(
+        model=model,
+        messages=messages,
+        stream=True,
+    )
 
     async def event_generator():
         async for chunk in stream:
