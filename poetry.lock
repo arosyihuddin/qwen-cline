@@ -2722,14 +2722,14 @@ files = [
 
 [[package]]
 name = "qwen-api"
-version = "1.3.6"
+version = "1.3.9"
 description = "Unofficial Qwen API Client"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "qwen_api-1.3.6-py3-none-any.whl", hash = "sha256:b7ed81681d7654129d8234c8ac238ffdd39afd1465b06640d41e71982701ae42"},
-    {file = "qwen_api-1.3.6.tar.gz", hash = "sha256:d8608587fe707d407ff77bbacb870cbbb2fbf6f0b38a1d8fbdc685e134af2e64"},
+    {file = "qwen_api-1.3.9-py3-none-any.whl", hash = "sha256:e445a66584561cfb73ad464179f538b606873f8f5cc294bb9f096563ff059d55"},
+    {file = "qwen_api-1.3.9.tar.gz", hash = "sha256:212ee9a4a182286ed4ed3d67539ac803e33a4b852250a5a62881c983a1e26eb8"},
 ]
 
 [package.dependencies]
@@ -3580,4 +3580,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "44834a973f10fc32e0dfcf517300bb4bf040d0c059d918d5ad4592fd687f29e7"
+content-hash = "3c78246a4a18a2fed89c2e3fac5f9dbbb9beacb6c00ce8c0b913ab95795ad071"
