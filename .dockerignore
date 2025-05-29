@@ -1,0 +1,6 @@
+.git
+__pycache__
+*.pyc
+*.log
+*.env.example
+poetry.lock
