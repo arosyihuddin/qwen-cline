@@ -36,6 +36,30 @@
      pip install -r requirements.txt
      ```
 
+### Using Docker
+
+1. Pull image dari Docker Hub:
+
+   ```bash
+   docker pull rosyihuddin/qwen-cline:latest
+   ```
+
+2. Buat file `.env` dari template:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit file `.env` untuk mengisi nilai `QWEN_AUTH_TOKEN` dan `QWEN_COOKIE`
+
+3. Jalankan container dengan env-file:
+
+   ```bash
+   docker run -d -p 8000:8000 --env-file .env rosyihuddin/qwen-cline:latest
+   ```
+
+4. Akses aplikasi di http://localhost:8000
+
 ---
 
 ## ⚙️ Configuration
@@ -45,6 +69,13 @@ Create a `.env` file at the project root:
 ```ini
 QWEN_AUTH_TOKEN=<your_auth_token>
 QWEN_COOKIE=<your_cookie>
+
+# Config
+THINKING=true
+# Default THINKING_BUDGET Max 38912
+THINKING_BUDGET=3000
+WEB_SEARCH=false
+WEB_DEVELOPMENT=false
 ```
 
 > **Note:** Follow the authentication guide in the [qwen-api repository](https://github.com/arosyihuddin/qwen-api) to obtain your token and cookie.

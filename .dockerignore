@@ -3,4 +3,5 @@ __pycache__
 *.pyc
 *.log
 *.env.example
+.env
 poetry.lock
