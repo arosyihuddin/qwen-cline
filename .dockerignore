@@ -5,3 +5,8 @@ __pycache__
 *.env.example
 .env
 poetry.lock
+*.pyo
+*.pyd
+.venv/
+.git/
+tests/
