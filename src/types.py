@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from qwen_api.core.types.response.function_tool import ToolCall
 
 
 class DeltaResponse(BaseModel):
@@ -20,6 +21,7 @@ class ResponseAutoCompletions(BaseModel):
 class Message(BaseModel):
     role: str
     content: str
+    tool_calls: Optional[list[ToolCall]] = None
 
 
 class OllamaResponse(BaseModel):
