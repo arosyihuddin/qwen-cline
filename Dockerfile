@@ -38,4 +38,4 @@ EXPOSE 8000
 
 # Jalankan aplikasi sebagai user non-root
 USER arosyihuddin
-CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

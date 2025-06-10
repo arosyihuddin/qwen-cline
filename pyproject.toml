@@ -1,6 +1,6 @@
 [project]
 name = "qwen-cline"
-version = "1.2.3"
+version = "1.2.4"
 description = ""
 authors = [
     {name = "Ahmad Rosyihuddin", email = "arosyihuddin6@gmail.com"}
