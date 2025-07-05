@@ -63,7 +63,7 @@ async def completions(request: Request):
     model = (
         payload["model"]
         if payload["model"] != "gpt-4o"
-        else os.getenv("QWEN_AGENT_MODEL")
+        else os.getenv("CONTINUE_AGENT_MODEL")
     )
     thinking = True if os.getenv("THINKING") == "true" else False
     search = True if os.getenv("WEB_SEARCH") == "true" else False

@@ -3,10 +3,16 @@ from fastapi import APIRouter, Request
 from qwen_api.core.types.chat import ChatMessage, TextBlock, ImageBlock
 from qwen_api.core.types.chat_model import ChatModel
 from qwen_api import Qwen
-from src.core.types.response import OllamaResponse, Message
+from src.utils.prompt import PARAMETER, TEMPLATE
+from .response import non_stream_response, stream_response
+from fastapi.responses import StreamingResponse
+from src.core.loggging import logger
+import json
+from datetime import datetime, timezone
+
 
 router = APIRouter()
-client = Qwen()
+client = Qwen(log_level="DEBUG")
 
 
 @router.get("/api/tags")
@@ -23,9 +29,27 @@ async def models():
     return {"models": model_list}
 
 
+@router.post("/api/show")
+async def ollama_show(request: Request):
+    payload = await request.json()
+    model = payload["name"]
+    return {
+        "parameters": PARAMETER,
+        "template": TEMPLATE,
+        "model_info": {"general.architecture": model},
+        "capabilities": ["completion", "tools"],
+    }
+
+
 @router.post("/api/chat")
 async def ollama_chat(request: Request):
     payload = await request.json()
+    print(payload)
+    try:
+        stream = payload["stream"]
+    except:
+        stream = True
+
     get_msg = payload["messages"]
     model = payload["model"]
     tools = payload.get("tools", None)
@@ -36,6 +60,10 @@ async def ollama_chat(request: Request):
     thinking_budget = None
     if model == "qwen3-235b-a22b":
         thinking_budget = int(os.getenv("THINKING_BUDGET"))
+
+    unique_models = set(ChatModel.__args__)
+    if model not in unique_models:
+        model = os.getenv("CONTINUE_AGENT_MODEL")
 
     for i in get_msg:
         if type(i["content"]) == str:
@@ -83,38 +111,63 @@ async def ollama_chat(request: Request):
     response = client.chat.create(
         model=model,
         messages=messages,
-        stream=False,
+        stream=stream,
         tools=tools if tools is not None else None,
     )
 
-    message = Message(
-        role=response.choices.message.role,
-        content=response.choices.message.content,
-        tool_calls=response.choices.message.tool_calls,
+    if stream:
+        return StreamingResponse(
+            stream_response(model=model, response=response),
+            media_type="text/event-stream",
+        )
+    else:
+        return non_stream_response(model=model, response=response)
+
+
+@router.post("/api/generate")
+async def completions(request: Request):
+    payload = await request.json()
+    model = payload["model"]
+    unique_models = set(ChatModel.__args__)
+    if model not in unique_models:
+        model = os.getenv("CONTINUE_AGENT_MODEL")
+    prompt = payload["prompt"]
+    messages = [ChatMessage(role="user", content=prompt)]
+
+    stream = await client.chat.acreate(
+        model=model,
+        messages=messages,
+        stream=True,
     )
 
-    return OllamaResponse(model=model, message=message, done=True, done_reason="stop")
+    async def event_generator():
+        async for chunk in stream:
+            # Ambil content dari chunk streaming (adjust sesuai API-mu)
+            content = chunk.choices[0].delta.content or ""
 
+            yield json.dumps(
+                {
+                    "model": model,
+                    "created_at": datetime.utcnow().isoformat() + "Z",
+                    "response": content,
+                    "done": False,
+                }
+            ) + "\n"
 
-# @router.post("/v1/api/generate")
-# async def completions(request: Request):
-#     payload = await request.json()
-#     print(payload)
-#     model = payload['model']
-#     prompt = payload['prompt']
-#     messages = [ChatMessage(role="user", content=prompt)]
+        yield json.dumps(
+            {
+                "model": model,
+                "created_at": datetime.utcnow().isoformat() + "Z",
+                "response": "",
+                "done": True,
+                "done_reason": "stop",
+                "total_duration": 1234567890,
+                "load_duration": 123456789,
+                "prompt_eval_count": 100,
+                "prompt_eval_duration": 456789000,
+                "eval_count": 5,
+                "eval_duration": 987654321,
+            }
+        ) + "\n"
 
-#     stream = await client.chat.acreate(
-#         model=model,
-#         messages=messages,
-#         stream=True,
-#     )
-
-#     async def event_generator():
-#         logging.info("Starting to stream response")
-#         async for chunk in stream:
-#             yield f"data: {chunk.json()}\n\n"
-#         yield "data: [DONE]\n\n"
-#         logging.info("Done streaming response")
-
-#     return StreamingResponse(event_generator(), media_type="text/event-stream")
+    return StreamingResponse(event_generator(), media_type="application/x-ndjson")

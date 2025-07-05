@@ -22,7 +22,8 @@ required_env_vars = [
     "THINKING",
     "WEB_SEARCH",
     "WEB_DEVELOPMENT",
-    "QWEN_AGENT_MODEL",
+    "CONTINUE_AGENT_MODE",
+    "CONTINUE_AGENT_MODEL",
     "QWEN_AUTH_TOKEN",
     "QWEN_COOKIE",
 ]
@@ -41,7 +42,8 @@ if missing_env_vars:
 logger.info(f"Thinking Mode\t\t:{os.getenv('THINKING')}")
 logger.info(f"Web Search Mode\t:{os.getenv('WEB_SEARCH')}")
 logger.info(f"Web Development\t:{os.getenv('WEB_DEVELOPMENT')}")
-logger.info(f"Model Qwen Agent\t:{os.getenv('QWEN_AGENT_MODEL')}")
+logger.info(f"Continue Agent Mode\t:{os.getenv('CONTINUE_AGENT_MODE')}")
+logger.info(f"Continue Agent Model\t:{os.getenv('CONTINUE_AGENT_MODEL')}")
 logger.info(f"Qwen Auth Token\t:{os.getenv('QWEN_AUTH_TOKEN')}")
 logger.info(f"Qwen Cookie\t:{os.getenv('QWEN_COOKIE')}")
 

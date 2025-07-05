@@ -759,7 +759,7 @@ wheels = [
 
 [[package]]
 name = "qwen-api"
-version = "1.4.12"
+version = "1.4.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -771,14 +771,14 @@ dependencies = [
     { name = "requests" },
     { name = "sseclient-py" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/75/d3/1c1f6649b26d36b2ed9911290429c8eec6c9471ac1933a69e9cec421c726/qwen_api-1.4.12.tar.gz", hash = "sha256:0314fd634f8d0aedd27e0c00ff54a9aa710bba6f0042b58417a2b539796dbebe", size = 31121, upload-time = "2025-06-08T05:14:35.376Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/22/732539ef4bb69accdbf46ebf421e883f879ac1197914e796d87329a18f68/qwen_api-1.4.13.tar.gz", hash = "sha256:dc7e8989778dfdff33d3279b7f2b564812cc9caa7b8f19b918e19ebe975a0f9c", size = 31119, upload-time = "2025-06-13T12:15:29.583Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/9c/d57c6dd14285f8b93d2408f06bf6e4f18cc15b8103e13b949205f44f263a/qwen_api-1.4.12-py3-none-any.whl", hash = "sha256:a252925577a728cb3b0f4e33f747078d551bad0c554cbe31bd2a8f6f776a779a", size = 30038, upload-time = "2025-06-08T05:14:33.745Z" },
+    { url = "https://files.pythonhosted.org/packages/ce/b8/e702d5e7b3adf858d7fd99fe475c463f355a10257017a9dd2985b3e43ab7/qwen_api-1.4.13-py3-none-any.whl", hash = "sha256:d488e28969f328145e8efc506fc73603b0ad4b82d806ae8680f3c71c3ed5eb78", size = 30070, upload-time = "2025-06-13T12:15:28.237Z" },
 ]
 
 [[package]]
 name = "qwen-cline"
-version = "0.1.0"
+version = "1.2.4"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -795,7 +795,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.11.5" },
     { name = "pydantic-settings", specifier = ">=2.9.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "qwen-api", specifier = ">=1.4.12" },
+    { name = "qwen-api", specifier = "==1.4.13" },
     { name = "uvicorn", specifier = ">=0.34.3" },
 ]
 

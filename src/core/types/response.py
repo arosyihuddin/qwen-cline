@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
 from qwen_api.core.types.response.function_tool import ToolCall
+from datetime import datetime
 
 
 class DeltaResponse(BaseModel):
@@ -26,7 +27,7 @@ class Message(BaseModel):
 
 class OllamaResponse(BaseModel):
     model: str
-    create_at: str = ""
+    create_at: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     message: Message
     done_reason: Optional[str] = None
     done: bool

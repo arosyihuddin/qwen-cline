@@ -31,7 +31,7 @@ async def chat_completions(request: Request):
     model = (
         payload["model"]
         if payload["model"] != "gpt-4o"
-        else os.getenv("QWEN_AGENT_MODEL")
+        else os.getenv("CONTINUE_AGENT_MODEL")
     )
     messages = []
     thinking = True if os.getenv("THINKING") == "true" else False

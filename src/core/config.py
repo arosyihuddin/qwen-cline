@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     QWEN_AUTH_TOKEN: str
     QWEN_COOKIE: str
-    QWEN_AGENT_MODEL: str
+    CONTINUE_AGENT_MODEL: str
     WEB_SEARCH: str
     WEB_DEVELOPMENT: str
     THINKING: str
