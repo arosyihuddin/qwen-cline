@@ -14,7 +14,6 @@ def non_stream_response(model, response):
 
 def stream_response(model, response):
     for chunk in response:
-        print(chunk)
         yield json.dumps(
             {
                 "model": model,

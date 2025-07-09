@@ -28,6 +28,11 @@ async def models():
 async def chat_completions(request: Request):
     payload = await request.json()
     get_msg = payload["messages"]
+    try:
+        stream = payload["stream"]
+    except KeyError:
+        stream = True
+
     model = (
         payload["model"]
         if payload["model"] != "gpt-4o"
@@ -84,15 +89,18 @@ async def chat_completions(request: Request):
                         )
                     )
 
-    stream = await client.chat.acreate(
+    response = await client.chat.acreate(
         model=model,
         messages=messages,
-        stream=True,
+        stream=stream,
     )
+
+    if not stream:
+        return response
 
     async def event_generator():
         logger.info("Starting to stream response")
-        async for chunk in stream:
+        async for chunk in response:
             yield f"data: {chunk.json()}\n\n"
         yield "data: [DONE]\n\n"
         logger.info("Done streaming response")
