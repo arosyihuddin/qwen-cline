@@ -14,13 +14,34 @@ def non_stream_response(model, response):
 
 def stream_response(model, response):
     for chunk in response:
+        # Get role and content from delta
+        delta_role = (
+            chunk.choices[0].delta.role if chunk.choices[0].delta.role else None
+        )
+        delta_content = chunk.choices[0].delta.content or ""
+
+        # Get tool_calls from message and convert to dict for JSON serialization
+        tool_calls = None
+        if chunk.message.tool_calls:
+            tool_calls = []
+            for tool_call in chunk.message.tool_calls:
+                tool_calls.append(
+                    {
+                        "function": {
+                            "name": tool_call.function.name,
+                            "arguments": tool_call.function.arguments,
+                        }
+                    }
+                )
+
         yield json.dumps(
             {
                 "model": model,
                 "create_at": datetime.now(timezone.utc).isoformat(),
                 "message": {
-                    "role": chunk.choices[0].delta.role,
-                    "content": chunk.choices[0].delta.content or "",
+                    "role": delta_role,
+                    "content": delta_content,
+                    "tool_calls": tool_calls,
                 },
                 "done": False,
             }

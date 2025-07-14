@@ -32,7 +32,7 @@ async def models():
 @router.post("/api/show")
 async def ollama_show(request: Request):
     payload = await request.json()
-    model = payload["name"]
+    model = payload["model"]
     return {
         "parameters": PARAMETER,
         "template": TEMPLATE,
